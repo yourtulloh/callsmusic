@@ -60,22 +60,16 @@ async def set_stream(chat_id: int, file: str):
 
 
 def pause(chat_id: int) -> bool:
-    if chat_id not in active_chats:
+    if chat_id not in active_chats or not active_chats[chat_id]['playing']:
         return False
-    elif not active_chats[chat_id]['playing']:
-        return False
-
     get_instance(chat_id).pause_playout()
     active_chats[chat_id]['playing'] = False
     return True
 
 
 def resume(chat_id: int) -> bool:
-    if chat_id not in active_chats:
+    if chat_id not in active_chats or active_chats[chat_id]['playing']:
         return False
-    elif active_chats[chat_id]['playing']:
-        return False
-
     get_instance(chat_id).resume_playout()
     active_chats[chat_id]['playing'] = True
     return True
